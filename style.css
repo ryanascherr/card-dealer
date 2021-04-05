@@ -1,0 +1,47 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+header{
+    text-align: center;
+}
+
+.flex-row{
+    display: flex;
+}
+
+.space-evenly{
+    justify-content: space-evenly;
+}
+
+.wrap{
+    flex-wrap: wrap;
+}
+
+.center{
+    justify-content: center;
+}
+
+img{
+    width: 200px;
+    margin-bottom: 15px;
+}
+
+#alert-text{
+    text-align: center;
+    font-size: 200%;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+button{
+    padding: 10px;
+    margin: 15px;
+    font-weight: bold;
+}
+
+button:hover{
+    transform: scale(1.1);
+}
