@@ -85,10 +85,7 @@ function shuffleCards(){
 }
 
 function initialize(){
-    fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1", {
-            "method": "GET",
-            "jokers_enabled=true": "GET"
-        })
+    fetch("https://deckofcardsapi.com/api/deck/new/?jokers_enabled=true")
             .then(function (response) {
                 return response.json();
             })
