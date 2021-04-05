@@ -92,7 +92,8 @@ function initialize(){
             .then(function (data) {
                 console.log(data);
                 deckID = data.deck_id;
-                $("#alert-text").text("Cards Remaining: " + data.remaining);;
+                $("#alert-text").text("Cards Remaining: " + data.remaining);
+                shuffleCards();
             })
 }
 
