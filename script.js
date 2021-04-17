@@ -1,4 +1,5 @@
 let deckID;
+
 const dealBtn = $("#deal-btn");
 const aceBtn = $("#ace-btn")
 const shuffleBtn = $("#shuffle-btn");
@@ -11,6 +12,7 @@ const cardFive = $("#card-five");
 const cardSix = $("#card-six");
 const extraCardOne = $("#extra-card-one")
 const extraCardTwo = $("#extra-card-two")
+
 let enoughCards = true;
 
 // initiativeBtn.click(dealInitiative);
@@ -51,6 +53,11 @@ function dealCards(){
         })
         .then(function (data) {
             console.log(data);
+            if (data.remaining >= 0){
+                enoughCards = true;
+            } else {
+                enoughCards = false;
+            }
             $("#alert-text").text("Cards Remaining: " + data.remaining);
             if (enoughCards){
                 cardOne.attr("src", data.cards[0].image);
@@ -64,11 +71,11 @@ function dealCards(){
             } else {
                 $("#alert-text").text("Not enough cards. Please shuffle deck.");
             }
-            if (data.remaining > 5){
-                enoughCards = true;
-            } else {
-                enoughCards = false;
-            }
+            // if (data.remaining > 5){
+            //     enoughCards = true;
+            // } else {
+            //     enoughCards = false;
+            // }
         })
 }
 
@@ -76,13 +83,18 @@ function aceDeal(){
     let dealURL = "https://deckofcardsapi.com/api/deck/" +
     deckID +
     "/draw/?count=2";
-
+    
     fetch(dealURL)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
             console.log(data);
+            if (data.remaining >= 0){
+                enoughCards = true;
+            } else {
+                enoughCards = false;
+            }
             $("#alert-text").text("Cards Remaining: " + data.remaining);
             if (enoughCards){
                 extraCardOne.attr("src", data.cards[0].image);
@@ -90,11 +102,11 @@ function aceDeal(){
             } else {
                 $("#alert-text").text("Not enough cards. Please shuffle deck.");
             }
-            if (data.remaining > 1){
-                enoughCards = true;
-            } else {
-                enoughCards = false;
-            }
+            // if (data.remaining > 1){
+            //     enoughCards = true;
+            // } else {
+            //     enoughCards = false;
+            // }
         })
 }
 
