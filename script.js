@@ -53,14 +53,14 @@ function dealCards(){
             console.log(data);
             $("#alert-text").text("Cards Remaining: " + data.remaining);
             if (enoughCards){
-                $(cardOne).attr("src", data.cards[0].image);
-                $(cardTwo).attr("src", data.cards[1].image);
-                $(cardThree).attr("src", data.cards[2].image);
-                $(cardFour).attr("src", data.cards[3].image);
-                $(cardFive).attr("src", data.cards[4].image);
-                $(cardSix).attr("src", data.cards[5].image);
-                $(extraCardOne).attr("src", "");
-                $(extraCardTwo).attr("src", "");
+                cardOne.attr("src", data.cards[0].image);
+                cardTwo.attr("src", data.cards[1].image);
+                cardThree.attr("src", data.cards[2].image);
+                cardFour.attr("src", data.cards[3].image);
+                cardFive.attr("src", data.cards[4].image);
+                cardSix.attr("src", data.cards[5].image);
+                extraCardOne.attr("src", "");
+                extraCardTwo.attr("src", "");
             } else {
                 $("#alert-text").text("Not enough cards. Please shuffle deck.");
             }
@@ -85,8 +85,8 @@ function aceDeal(){
             console.log(data);
             $("#alert-text").text("Cards Remaining: " + data.remaining);
             if (enoughCards){
-                $(extraCardOne).attr("src", data.cards[0].image);
-                $(extraCardTwo).attr("src", data.cards[1].image);
+                extraCardOne.attr("src", data.cards[0].image);
+                extraCardTwo.attr("src", data.cards[1].image);
             } else {
                 $("#alert-text").text("Not enough cards. Please shuffle deck.");
             }
@@ -111,14 +111,14 @@ function shuffleCards(){
             console.log(data);
             enoughCards = true;
             $("#alert-text").text("The deck has been shuffled!");
-            $(cardOne).attr("src", "");
-            $(cardTwo).attr("src", "");
-            $(cardThree).attr("src", "");
-            $(cardFour).attr("src", "");
-            $(cardFive).attr("src", "");
-            $(cardSix).attr("src", "");
-            $(extraCardOne).attr("src", "");
-            $(extraCardTwo).attr("src", "");
+            cardOne.attr("src", "");
+            cardTwo.attr("src", "");
+            cardThree.attr("src", "");
+            cardFour.attr("src", "");
+            cardFive.attr("src", "");
+            cardSix.attr("src", "");
+            extraCardOne.attr("src", "");
+            extraCardTwo.attr("src", "");
         })
 }
 
@@ -159,11 +159,11 @@ cardSix.click(function(){
     $(this).attr("src", "");
 })
 
-$(extraCardOne).click(function(){
+extraCardOne.click(function(){
     $(this).attr("src", "");
 })
 
-$(extraCardTwo).click(function(){
+extraCardTwo.click(function(){
     $(this).attr("src", "");
 })
 
