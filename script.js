@@ -1,17 +1,17 @@
-var deckID;
-var dealBtn = $("#deal-btn");
-var aceBtn = $("#ace-btn")
-var shuffleBtn = $("#shuffle-btn");
-var initiativeBtn = $("#initiative-btn");
-var cardOne = $("#card-one");
-var cardTwo = $("#card-two");
-var cardThree = $("#card-three");
-var cardFour = $("#card-four");
-var cardFive = $("#card-five");
-var cardSix = $("#card-six");
-var extraCardOne = $("#extra-card-one")
-var extraCardTwo = $("#extra-card-two")
-var enoughCards = true;
+let deckID;
+const dealBtn = $("#deal-btn");
+const aceBtn = $("#ace-btn")
+const shuffleBtn = $("#shuffle-btn");
+// const initiativeBtn = $("#initiative-btn");
+const cardOne = $("#card-one");
+const cardTwo = $("#card-two");
+const cardThree = $("#card-three");
+const cardFour = $("#card-four");
+const cardFive = $("#card-five");
+const cardSix = $("#card-six");
+const extraCardOne = $("#extra-card-one")
+const extraCardTwo = $("#extra-card-two")
+let enoughCards = true;
 
 // initiativeBtn.click(dealInitiative);
 dealBtn.click(dealCards);
@@ -41,7 +41,7 @@ shuffleBtn.click(shuffleCards);
 // }
 
 function dealCards(){
-    var dealURL = "https://deckofcardsapi.com/api/deck/" +
+    let dealURL = "https://deckofcardsapi.com/api/deck/" +
     deckID +
     "/draw/?count=6";
 
@@ -73,7 +73,7 @@ function dealCards(){
 }
 
 function aceDeal(){
-    var dealURL = "https://deckofcardsapi.com/api/deck/" +
+    let dealURL = "https://deckofcardsapi.com/api/deck/" +
     deckID +
     "/draw/?count=2";
 
@@ -99,7 +99,7 @@ function aceDeal(){
 }
 
 function shuffleCards(){
-    var shuffleURL = "https://deckofcardsapi.com/api/deck/" +
+    let shuffleURL = "https://deckofcardsapi.com/api/deck/" +
     deckID +
     "/shuffle/";
 
