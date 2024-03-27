@@ -53,3 +53,9 @@ button:hover{
 .selected {
     border: 2px solid blue;
 }
+
+.hand-container {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}

@@ -31,15 +31,20 @@ $('body').on('click', '.card', function () {
         $(this).addClass("selected");
         numberOfCardsSelected++;
     }
+    resetHands();
     makeHandArray();
     checkHands();
 });
 
-$(cards).click(function() {
-
-
-    
-});
+function resetHands() {
+    isFOAK = false;
+    isTOAK = false;
+    isFullHouse = false;
+    isStraight = false;
+    isFlush = false;
+    isTwoPair = false;
+    isPair = false;
+}
 
 function makeHandArray() {
     handArray = [];
@@ -54,6 +59,8 @@ function makeHandArray() {
 }
 
 function checkHands() {
+
+    console.log("Checking hand...")
 
     checkStraightFlush();
     checkFOAK();
@@ -221,21 +228,9 @@ function checkStraight() {
 
     if (arrayOfNumbers.length < 5) return;
 
-    let currentNumber;
-    let count = 0;
-    $(arrayOfNumbers).each(function(index, num) {
-        if (currentNumber == null) {
-            currentNumber = num;
-        } else {
-            currentNumber++;
-            if (currentNumber == num) {
-                count++;
-                if (count = 5) {
-                    isStraight = true;
-                }
-            }
-        }
-    })
+    if (arrayOfNumbers[0] == arrayOfNumbers[1]-1 && arrayOfNumbers[0] == arrayOfNumbers[2]-2 && arrayOfNumbers[0] == arrayOfNumbers[3]-3 &&arrayOfNumbers[0] == arrayOfNumbers[4]-4) {
+        isStraight = true;
+    }
 }
 
 function checkTOAK() {
