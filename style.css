@@ -51,11 +51,20 @@ button:hover{
 }
 
 .selected {
-    border: 2px solid blue;
+    border: 2px solid teal;
+    transform: translateY(-20px);
 }
 
 .hand-container {
     display: flex;
     justify-content: center;
     padding: 15px;
+}
+
+.card-container {
+    padding: 30px;
+}
+
+.hand {
+    height: 21.5px;
 }

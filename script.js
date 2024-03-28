@@ -1,4 +1,5 @@
 let deckID;
+let isDiscard = false;
 
 const dealBtn = $("#deal-btn");
 const shuffleBtn = $("#shuffle-btn");
@@ -14,7 +15,7 @@ let isTwoPair = false;
 let isPair = false;
 let currentHand = "";
 
-let handSize = 40;
+let handSize = 8;
 let possibleNumbers = [2,3,4,5,6,7,8,9,10,11,12,13,14];
 let numberOfCardsSelected = 0;
 let enoughCards = true;
@@ -35,6 +36,13 @@ $('body').on('click', '.card', function () {
     makeHandArray();
     checkHands();
 });
+
+$("#discard-btn").click(function() {
+    let selectedCards = $(".selected");
+    selectedCards.remove();
+    isDiscard = true;
+    dealCards();
+})
 
 function resetHands() {
     isFOAK = false;
@@ -59,8 +67,6 @@ function makeHandArray() {
 }
 
 function checkHands() {
-
-    console.log("Checking hand...")
 
     checkStraightFlush();
     checkFOAK();
@@ -231,6 +237,11 @@ function checkStraight() {
     if (arrayOfNumbers[0] == arrayOfNumbers[1]-1 && arrayOfNumbers[0] == arrayOfNumbers[2]-2 && arrayOfNumbers[0] == arrayOfNumbers[3]-3 &&arrayOfNumbers[0] == arrayOfNumbers[4]-4) {
         isStraight = true;
     }
+
+    if (arrayOfNumbers[0] == 2 && arrayOfNumbers[1] == 3 && arrayOfNumbers[2] == 4 && arrayOfNumbers[3] == 5 && arrayOfNumbers[4] == 14) {
+        isStraight = true;
+    }
+
 }
 
 function checkTOAK() {
@@ -350,9 +361,19 @@ function checkPair() {
 
 function dealCards(){
 
+    let howManyCards;
+
+    if (isDiscard) {
+        howManyCards = numberOfCardsSelected;
+        // isDiscard = false;
+        numberOfCardsSelected = 0;
+    } else {
+        howManyCards = handSize;
+    }
+
     let dealURL = "https://deckofcardsapi.com/api/deck/" +
     deckID +
-    `/draw/?count=${handSize}`;
+    `/draw/?count=${howManyCards}`;
 
     fetch(dealURL)
         .then(function (response) {
@@ -364,9 +385,14 @@ function dealCards(){
             } else {
                 enoughCards = false;
             }
+
             $("#alert-text").text("Cards Remaining: " + data.remaining);
             if (enoughCards){
-                $(".card-container").empty();
+                if (!isDiscard) {
+                    $(".card-container").empty();
+                } else {
+                    isDiscard = false;
+                }
                 for (let i = 0; i < handSize; i++) {
                     $(".card-container").append(`<img class="card" src="${data.cards[i].image}" data-suit="${data.cards[i].suit}" data-number="${data.cards[i].value}">`)
                 }
@@ -378,9 +404,7 @@ function dealCards(){
 }
 
 function shuffleCards(){
-    let shuffleURL = "https://deckofcardsapi.com/api/deck/" +
-    deckID +
-    "/shuffle/";
+    let shuffleURL = "https://deckofcardsapi.com/api/deck/" + deckID + "/shuffle/";
 
     fetch(shuffleURL)
         .then(function (response) {
@@ -404,29 +428,5 @@ function initialize(){
                 shuffleCards();
             })
 }
-
-// cardOne.click(function(){
-//     $(this).attr("src", "");
-// })
-
-// cardTwo.click(function(){
-//     $(this).attr("src", "");
-// })
-
-// cardThree.click(function(){
-//     $(this).attr("src", "");
-// })
-
-// cardFour.click(function(){
-//     $(this).attr("src", "");
-// })
-
-// cardFive.click(function(){
-//     $(this).attr("src", "");
-// })
-
-// cardSix.click(function(){
-//     $(this).attr("src", "");
-// })
 
 initialize();
