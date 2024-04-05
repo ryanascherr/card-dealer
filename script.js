@@ -460,16 +460,30 @@ function dealCards(cardsToDeal){
                 enoughCards = false;
             }
 
+            let arrayOfCardObjects = [];
+
             $("#alert-text").text("Cards Remaining: " + data.remaining);
             if (enoughCards){
                 if (!isDiscard) {
                     $(".card-container").empty();
                 } else {
+                    let currentCards = $(".card");
+                    console.log(currentCards);
+                    $(currentCards).each(function( index ) {
+                        console.log(this);
+                        let number = parseInt($(this).attr("data-number"));
+                        let suit = $(this).attr("data-suit");
+                        let image = $(this).attr("src");
+                        let card = {
+                            "number": number,
+                            "suit": suit,
+                            "image": image
+                        }
+                        arrayOfCardObjects.push(card);
+                    });
                     isDiscard = false;
                     numberOfCardsSelected = 0;
                 }
-
-                let arrayOfCardObjects = []
 
                 for (let i = 0; i < cardsToDeal; i++) {
                     let trueValue;
@@ -491,6 +505,9 @@ function dealCards(cardsToDeal){
                         image: data.cards[i].image
                     }
 
+                    console.log("OHHHH");
+                    console.log(arrayOfCardObjects);
+
                     arrayOfCardObjects.push(currentObject);
                     arrayOfCardObjects?.sort((a, b) => (a.number > b.number ? -1 : 1))
                 }
@@ -499,6 +516,8 @@ function dealCards(cardsToDeal){
                     console.log("-- Array of cards dealt:");
                     console.log(arrayOfCardObjects);
                 };
+
+                $(".card-container").empty();
 
                 $.each(arrayOfCardObjects, function(index, card) {
                     $(".card-container").append(`<img class="card" src="${card.image}" data-suit="${card.suit}" data-number="${card.number}">`)
