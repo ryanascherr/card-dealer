@@ -30,7 +30,6 @@ $(dealBtn).click(function() {
 shuffleBtn.click(shuffleCards);
 
 $('body').on('click', '.card', function () {
-    console.log("ummm")
     if ($(this).hasClass("selected")) {
         $(this).removeClass("selected");
         numberOfCardsSelected--;
