@@ -431,16 +431,6 @@ function updateHandStatus(hand) {
 
 function dealCards(cardsToDeal){
 
-    let howManyCards;
-
-    // if (isDiscard) {
-    //     howManyCards = numberOfCardsSelected;
-    //     // isDiscard = false;
-    //     numberOfCardsSelected = 0;
-    // } else {
-    //     howManyCards = cardsToDeal;
-    // }
-
     if (isInTestingMode) {
         console.log("-- Dealing " + cardsToDeal + " cards")
     }
@@ -505,9 +495,6 @@ function dealCards(cardsToDeal){
                         image: data.cards[i].image
                     }
 
-                    console.log("OHHHH");
-                    console.log(arrayOfCardObjects);
-
                     arrayOfCardObjects.push(currentObject);
                     arrayOfCardObjects?.sort((a, b) => (a.number > b.number ? -1 : 1))
                 }
@@ -562,7 +549,11 @@ function initialize(){
                     console.log("--> Initializing... <--");
                     console.log("-- Making deck. Deck ID: " + deckID);
                 }
+
             })
+            setTimeout(function(){
+                dealCards(handSize);
+            }, 500); 
 }
 
 initialize();
