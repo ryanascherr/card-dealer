@@ -18,16 +18,19 @@ let isTwoPair = false;
 let isPair = false;
 let currentHand = "";
 
-let handSize = 52;
+let handSize = 8;
 let possibleNumbers = [2,3,4,5,6,7,8,9,10,11,12,13,14];
 let possibleStrings = ['14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
 let numberOfCardsSelected = 0;
 let enoughCards = true;
 
-dealBtn.click(dealCards);
+$(dealBtn).click(function() {
+    dealCards(handSize);
+})
 shuffleBtn.click(shuffleCards);
 
 $('body').on('click', '.card', function () {
+    console.log("ummm")
     if ($(this).hasClass("selected")) {
         $(this).removeClass("selected");
         numberOfCardsSelected--;
@@ -57,7 +60,8 @@ $("#discard-btn").click(function() {
     let selectedCards = $(".selected");
     selectedCards.remove();
     isDiscard = true;
-    dealCards();
+    let cardsToDeal = selectedCards.length
+    dealCards(cardsToDeal);
 })
 
 function resetHands() {
@@ -70,6 +74,7 @@ function resetHands() {
     isPair = false;
 
     if (isInTestingMode) {
+        console.log("--------------------")
         console.log("--<> Step 1: All hand types set to false")
     }
 }
@@ -95,6 +100,8 @@ function checkHands() {
         console.log("--<> Step 3: Check hand types");
     }
 
+    
+    
     checkStraightFlush();
     checkFOAK();
     checkFullHouse();
@@ -346,8 +353,13 @@ function checkTOAK() {
 function checkTwoPair() {
 
     if (isInTestingMode) {
-        console.log(" --- Checking for two pair")
+        console.log(" --- Checking for two pair");
+        if (handArray.length < 4) {
+            console.log("   --- Less than 4 cards -> cannot be a two pair");
+        }
     }
+
+    if (handArray.length < 4) return;
 
     convertFaceCards();
      
@@ -372,7 +384,12 @@ function checkPair() {
 
     if (isInTestingMode) {
         console.log(" --- Checking for pair");
+        if (handArray.length < 2) {
+            console.log("   --- Less than 2 cards -> cannot be a pair");
+        }
     }
+
+    if (handArray.length < 2) return;
 
     convertFaceCards();
      
@@ -413,25 +430,25 @@ function updateHandStatus(hand) {
     $(".hand").text(hand);
 }
 
-function dealCards(){
+function dealCards(cardsToDeal){
 
     let howManyCards;
 
-    if (isDiscard) {
-        howManyCards = numberOfCardsSelected;
-        // isDiscard = false;
-        numberOfCardsSelected = 0;
-    } else {
-        howManyCards = handSize;
-    }
+    // if (isDiscard) {
+    //     howManyCards = numberOfCardsSelected;
+    //     // isDiscard = false;
+    //     numberOfCardsSelected = 0;
+    // } else {
+    //     howManyCards = cardsToDeal;
+    // }
 
     if (isInTestingMode) {
-        console.log("-- Dealing " + howManyCards + " cards")
+        console.log("-- Dealing " + cardsToDeal + " cards")
     }
 
     let dealURL = "https://deckofcardsapi.com/api/deck/" +
     deckID +
-    `/draw/?count=${howManyCards}`;
+    `/draw/?count=${cardsToDeal}`;
 
     fetch(dealURL)
         .then(function (response) {
@@ -450,11 +467,12 @@ function dealCards(){
                     $(".card-container").empty();
                 } else {
                     isDiscard = false;
+                    numberOfCardsSelected = 0;
                 }
 
                 let arrayOfCardObjects = []
 
-                for (let i = 0; i < handSize; i++) {
+                for (let i = 0; i < cardsToDeal; i++) {
                     let trueValue;
                     if (data.cards[i].value == "ACE") {
                         trueValue = 14;
@@ -479,7 +497,7 @@ function dealCards(){
                 }
 
                 if (isInTestingMode) {
-                    console.log("Array of cards dealt:");
+                    console.log("-- Array of cards dealt:");
                     console.log(arrayOfCardObjects);
                 };
 
