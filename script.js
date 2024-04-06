@@ -1,13 +1,64 @@
-let isInTestingMode = true;
+let isInTestingMode = false;
 
 let deckID;
 let isDiscard = false;
 
 const dealBtn = $("#deal-btn");
 const shuffleBtn = $("#shuffle-btn");
+const playBtn = $("#play-btn");
 let cards = document.querySelectorAll(".card");
 let handArray = [];
 let arrayOfNumbers = [];
+let chips = 0;
+let mult = 0;
+
+let hands = [
+    {
+        name: "Straight Flush",
+        chips: 100,
+        mult: 8
+    },
+    {
+        name: "Four of a Kind",
+        chips: 60,
+        mult: 7
+    },
+    {
+        name: "Full House",
+        chips: 40,
+        mult: 4
+    },
+    {
+        name: "Flush",
+        chips: 35,
+        mult: 4
+    },
+    {
+        name: "Straight",
+        chips: 30,
+        mult: 4
+    },
+    {
+        name: "Three of a Kind",
+        chips: 30,
+        mult: 3
+    },
+    {
+        name: "Two Pair",
+        chips: 20,
+        mult: 2
+    },
+    {
+        name: "Pair",
+        chips: 10,
+        mult: 2
+    },
+    {
+        name: "High Card",
+        chips: 5,
+        mult: 1
+    }
+]
 
 let isFOAK = false;
 let isTOAK = false;
@@ -18,7 +69,7 @@ let isTwoPair = false;
 let isPair = false;
 let currentHand = "";
 
-let handSize = 8;
+let handSize = 52;
 let possibleNumbers = [2,3,4,5,6,7,8,9,10,11,12,13,14];
 let possibleStrings = ['14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
 let numberOfCardsSelected = 0;
@@ -28,6 +79,7 @@ $(dealBtn).click(function() {
     dealCards(handSize);
 })
 shuffleBtn.click(shuffleCards);
+playBtn.click(scoreHand);
 
 $('body').on('click', '.card', function () {
     if ($(this).hasClass("selected")) {
@@ -41,6 +93,7 @@ $('body').on('click', '.card', function () {
     resetHands();
     makeHandArray();
     checkHands();
+    updatePoints();
 });
 
 function makeInitialHandArray() {
@@ -89,8 +142,10 @@ function makeHandArray() {
         handArray.push(currentCard);
     });
 
-    console.log("--<> Step 2: Make hand array:");
-    console.log(handArray);
+    if (isInTestingMode) {
+        console.log("--<> Step 2: Make hand array:");
+        console.log(handArray);
+    }
 }
 
 function checkHands() {
@@ -429,6 +484,25 @@ function updateHandStatus(hand) {
     $(".hand").text(hand);
 }
 
+function updatePoints() {
+    if (numberOfCardsSelected == 0) {
+        currentHand = "";
+        chips = 0;
+        mult = 0;
+        $(".chips").text("");
+        $(".mult").text("");
+    } else {
+        $.each(hands, function(index, val) { 
+            if (currentHand == val.name) {
+                chips = val.chips;
+                mult = val.mult;
+                $(".chips").text(chips);
+                $(".mult").text(mult);
+            }
+        });
+    }
+}
+
 function dealCards(cardsToDeal){
 
     if (isInTestingMode) {
@@ -458,9 +532,7 @@ function dealCards(cardsToDeal){
                     $(".card-container").empty();
                 } else {
                     let currentCards = $(".card");
-                    console.log(currentCards);
                     $(currentCards).each(function( index ) {
-                        console.log(this);
                         let number = parseInt($(this).attr("data-number"));
                         let suit = $(this).attr("data-suit");
                         let image = $(this).attr("src");
@@ -477,22 +549,29 @@ function dealCards(cardsToDeal){
 
                 for (let i = 0; i < cardsToDeal; i++) {
                     let trueValue;
+                    let points;
                     if (data.cards[i].value == "ACE") {
                         trueValue = 14;
+                        points = 11;
                     } else if (data.cards[i].value == "JACK") {
                         trueValue = 11;
+                        points = 10;
                     } else if (data.cards[i].value == "QUEEN") {
                         trueValue = 12;
+                        points = 10;
                     } else if (data.cards[i].value == "KING") {
                         trueValue = 13;
+                        points = 10;
                     } else {
                         trueValue = parseInt(data.cards[i].value);
+                        points = parseInt(data.cards[i].value);
                     }
 
                     let currentObject = {
                         suit: data.cards[i].suit,
                         number: trueValue,
-                        image: data.cards[i].image
+                        image: data.cards[i].image,
+                        points: points
                     }
 
                     arrayOfCardObjects.push(currentObject);
@@ -507,7 +586,7 @@ function dealCards(cardsToDeal){
                 $(".card-container").empty();
 
                 $.each(arrayOfCardObjects, function(index, card) {
-                    $(".card-container").append(`<img class="card" src="${card.image}" data-suit="${card.suit}" data-number="${card.number}">`)
+                    $(".card-container").append(`<img class="card" src="${card.image}" data-suit="${card.suit}" data-number="${card.number}" data-points="${card.points}">`)
                  });
 
             } else {
@@ -533,6 +612,19 @@ function shuffleCards(){
                 console.log("-- Shuffing cards");
             }
         })
+}
+
+function scoreHand() {
+    let selectedCards = $(".selected");
+    $.each(selectedCards, function(index, val) { 
+        let chipsFromCard = $(val).attr("data-points");
+        chips += parseInt(chipsFromCard);
+    });
+    console.log(currentHand);
+    console.log("chips: " + chips);
+    console.log("mult: " + mult);
+    let totalPoints = chips*mult;
+    console.log(totalPoints);
 }
 
 function initialize(){

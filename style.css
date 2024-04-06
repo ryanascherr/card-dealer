@@ -68,3 +68,7 @@ button:hover{
 .hand {
     height: 21.5px;
 }
+
+.score p {
+    text-align: center;
+}
